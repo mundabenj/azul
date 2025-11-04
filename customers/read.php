@@ -22,6 +22,49 @@ if ($requestMethod !== 'GET') {
     echo json_encode($data);
     exit;
 }else{
+
+    // using if to fetch a single customer or all customers
+    if(isset($_GET['userId']) && $_GET['userId'] != ''){
+        // fetch single customer
+        $userId = trim($_GET['userId']);
+
+        try {
+            $stmt = $pdo->prepare("SELECT userId, fullname, email FROM users WHERE userId = :userId");
+            $stmt->bindParam(':userId', $userId);
+            $stmt->execute();
+
+            // count rows before fetching
+            $rowCount = $stmt->rowCount();
+            if($rowCount > 0){
+                // proceed to fetch
+                $customer = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                $data = [
+                    'status' => http_response_code(200), // OK
+                    'message' => 'Customer retrieved successfully',
+                    'data' => $customer
+                ];
+                echo json_encode($data);
+                exit;
+            }else{
+                $data = [
+                    'status' => http_response_code(404), // Not Found
+                    'message' => 'Customer not found'
+                ];
+                echo json_encode($data);
+                exit;
+            }
+        } catch (PDOException $e) {
+            $data = [
+                'status' => http_response_code(500), // Internal Server Error
+                'message' => 'Database query failed: ' . $e->getMessage()
+            ];
+            echo json_encode($data);
+            exit;
+        }
+
+    }else{
+        // fetch all customers
     try {
         $stmt = $pdo->query("SELECT userId, fullname, email FROM users");
 
@@ -54,4 +97,5 @@ if ($requestMethod !== 'GET') {
         echo json_encode($data);
         exit;
     }
+        }
 }
