@@ -32,9 +32,9 @@ USE `azul`;
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
-  `userId` bigint(20) NOT NULL,
-  `fullname` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
+  `userId` bigint(11) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY  ,
+  `fullname` varchar(60) NOT NULL,
+  `email` varchar(60) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -55,7 +55,6 @@ INSERT INTO `users` (`userId`, `fullname`, `email`, `created_at`) VALUES
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`userId`),
   ADD UNIQUE KEY `email` (`email`);
 COMMIT;
 
