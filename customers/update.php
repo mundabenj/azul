@@ -53,9 +53,9 @@ if (empty($customerData['userId']) || empty($customerData['fullname']) || empty(
 // Update the customer in the database
 try {
     $stmt = $pdo->prepare("UPDATE users SET fullname = :fullname, email = :email WHERE userId = :userId");
-    $stmt->bindParam(':fullname', $customerData['fullname']);
-    $stmt->bindParam(':email', $customerData['email']);
-    $stmt->bindParam(':userId', $customerData['userId']);
+    $stmt->bindParam(':fullname', $customerData['fullname'], PDO::PARAM_STR);
+    $stmt->bindParam(':email', $customerData['email'], PDO::PARAM_STR);
+    $stmt->bindParam(':userId', $customerData['userId'], PDO::PARAM_INT);
     $stmt->execute();
 
     $data = [

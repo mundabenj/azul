@@ -66,7 +66,7 @@ if (!$customerExists) {
 // Delete the customer in the database
 try {
     $stmt = $pdo->prepare("DELETE FROM users WHERE userId = :userId");
-    $stmt->bindParam(':userId', $customerData['userId']);
+    $stmt->bindParam(':userId', $customerData['userId'], PDO::PARAM_INT);
     $stmt->execute();
 
     $data = [
